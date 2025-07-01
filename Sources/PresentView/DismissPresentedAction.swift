@@ -4,14 +4,14 @@ public protocol DismissPresentedAction {
     func callAsFunction()
 }
 
-public struct DismissPresentedActionImpl<Item>: DismissPresentedAction {
+struct DismissPresentedActionImpl<Item>: DismissPresentedAction {
     @Binding private var presented: [Presented<Item>]
     
     init(_ presented: Binding<[Presented<Item>]>) {
         self._presented = presented
     }
     
-    public func callAsFunction() {
+    func callAsFunction() {
         presented.pop()
     }
 }
