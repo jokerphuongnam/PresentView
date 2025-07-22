@@ -7,6 +7,8 @@ enum PresentedType {
     case overlay
 }
 
+@available(tvOS 16.0, *)
+@available(macOS 12.0, *)
 @MainActor private struct PresentedViewModifier<PresentedContent, Item>: ViewModifier where PresentedContent: View {
     private var isPresented: (PresentedType) -> Binding<Bool>
     private let presented: Presented<Item>?
@@ -28,23 +30,29 @@ enum PresentedType {
                     presentedContent(item)
                 }
             }
+#if os(iOS)
             .fullScreenCover(isPresented: isPresented(.fullScreenCover), onDismiss: presented?.onDismiss) {
                 if let item {
                     presentedContent(item)
                 }
             }
+#endif
+#if !os(watchOS) && !os(tvOS)
             .popover(isPresented: isPresented(.popover), attachmentAnchor: presented?.attachmentAnchor ?? .rect(.bounds), arrowEdge: presented?.arrowEdge) {
                 if let item {
                     presentedContent(item)
                 }
             }
+#endif
             .overlay(alignment: .center) {
                 if isOverlay.wrappedValue, let item {
                     ZStack {
                         presented?.background
                             .ignoresSafeArea(.all)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
+#if os(iOS)
                             .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+#endif
                             .onTapGesture {
                                 if presented?.canCloseWhenTapBackground ?? false {
                                     isOverlay.wrappedValue = false
@@ -60,6 +68,8 @@ enum PresentedType {
     }
 }
 
+@available(tvOS 16.0, *)
+@available(macOS 12.0, *)
 extension View {
     func presented<PresentedContent, Item>(
         isPresented: @escaping (PresentedType) -> Binding<Bool>,

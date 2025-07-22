@@ -1,6 +1,6 @@
 import SwiftUI
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 13.0, macOS 12.0, tvOS 16.0, watchOS 6.0, *)
 public struct PresentView<RootContent, PresentedContent, Item>: View where RootContent: View, PresentedContent: View, Item: Equatable {
     @Binding private var presented: [Presented<Item>]
     @Environment(\.dismiss) private var dismiss

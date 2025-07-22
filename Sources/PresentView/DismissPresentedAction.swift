@@ -5,6 +5,7 @@ public protocol DismissPresentedAction {
     func callAsFunction()
 }
 
+@available(macOS 10.15, *)
 struct DismissPresentedActionImpl<Item>: DismissPresentedAction {
     @Binding private var presented: [Presented<Item>]
     
@@ -21,6 +22,7 @@ struct DismissPresentedActionImpl<Item>: DismissPresentedAction {
     }
 }
 
+@available(macOS 10.15, *)
 extension EnvironmentValues {
     internal(set) public var dismissPresented: DismissPresentedAction {
         get {
@@ -33,6 +35,7 @@ extension EnvironmentValues {
 }
 
 struct DismissPresentedKey: EnvironmentKey {
+    @available(macOS 10.15, *)
     static var defaultValue: DismissPresentedAction {
         DismissPresentedActionImpl<Any>(.constant([]))
     }

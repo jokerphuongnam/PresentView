@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(macOS 10.15, *)
 public enum Presented<Item> {
     case sheet(item: Item, onDismiss: (() -> Void)? = nil)
     case fullScreenCover(item: Item, onDismiss: (() -> Void)? = nil)
@@ -7,6 +8,7 @@ public enum Presented<Item> {
     case overlay(item: Item, canCloseWhenTapBackground: Bool = true, blurRadius: CGFloat = 0, background: AnyView)
 }
 
+@available(macOS 10.15, *)
 extension Presented {
     var item: Item {
         switch self {
@@ -34,10 +36,8 @@ extension Presented {
     
     var attachmentAnchor: PopoverAttachmentAnchor {
         switch self {
-        case .popover(_, let anchor, _):
-            anchor
-        default:
-                .rect(.bounds)
+        case .popover(_, let anchor, _): anchor
+        default: .rect(.bounds)
         }
     }
     
