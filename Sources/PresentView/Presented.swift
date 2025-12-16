@@ -9,7 +9,7 @@ public enum Presented<Item> {
 }
 
 @available(macOS 10.15, *)
-extension Presented {
+public extension Presented {
     var item: Item {
         switch self {
         case .sheet(let item, _):
