@@ -9,8 +9,8 @@ public enum Presented<Item> {
 }
 
 @available(macOS 10.15, *)
-public extension Presented {
-    var item: Item {
+extension Presented {
+    public var item: Item {
         switch self {
         case .sheet(let item, _):
             item
@@ -23,7 +23,7 @@ public extension Presented {
         }
     }
     
-    var onDismiss: (() -> Void)? {
+    public var onDismiss: (() -> Void)? {
         switch self {
         case .sheet(_, let onDismiss):
             onDismiss
@@ -34,14 +34,14 @@ public extension Presented {
         }
     }
     
-    var attachmentAnchor: PopoverAttachmentAnchor {
+    public var attachmentAnchor: PopoverAttachmentAnchor {
         switch self {
         case .popover(_, let anchor, _): anchor
         default: .rect(.bounds)
         }
     }
     
-    var arrowEdge: Edge? {
+    public var arrowEdge: Edge? {
         switch self {
         case .popover(_, _, let edge):
             edge
@@ -50,7 +50,7 @@ public extension Presented {
         }
     }
     
-    var canCloseWhenTapBackground: Bool {
+    public var canCloseWhenTapBackground: Bool {
         switch self {
         case .overlay(_, let canCloseWhenTapBackground, _, _):
             canCloseWhenTapBackground
@@ -59,7 +59,7 @@ public extension Presented {
         }
     }
     
-    var blurRadius: CGFloat {
+    public var blurRadius: CGFloat {
         switch self {
         case .overlay(_, _, let radius, _):
             radius
@@ -68,7 +68,7 @@ public extension Presented {
         }
     }
     
-    @ViewBuilder var background: some View {
+    @ViewBuilder public var background: some View {
         switch self {
         case .overlay(_, _, _, let background):
             background
@@ -77,7 +77,7 @@ public extension Presented {
         }
     }
     
-    static func ==(lhs: Self, rhs: PresentedType) -> Bool {
+    public static func ==(lhs: Self, rhs: PresentedType) -> Bool {
         switch (lhs, rhs) {
         case (.sheet, .sheet): true
         case (.fullScreenCover, .fullScreenCover): true

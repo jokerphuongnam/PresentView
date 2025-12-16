@@ -1,6 +1,6 @@
 import SwiftUI
 
-enum PresentedType {
+public enum PresentedType {
     case sheet
     case fullScreenCover
     case popover
