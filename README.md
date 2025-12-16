@@ -152,3 +152,6 @@ dismissPresented.canDismiss
 ## License
 
 MIT License
+
+## Contributing
+Please read [CONTRIBUTING.md](./CONTRIBUTING.md) before submitting a pull request.
