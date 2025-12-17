@@ -151,7 +151,7 @@ dismissPresented.canDismiss
 
 ## License
 
-MIT License
+MIT License. See [LICENSE](./LICENSE) for details.
 
 ## Contributing
 Please read [CONTRIBUTING.md](./CONTRIBUTING.md) before submitting a pull request.
