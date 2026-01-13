@@ -4,6 +4,7 @@ import PresentView
 struct ScreenA: View {
     @Binding var presented: [Presented<Screen>]
     @Environment(\.dismissPresented) private var dismissPresented
+    @State private var buttonFrame: CGRect = .zero
     
     var body: some View {
         VStack {
@@ -24,6 +25,13 @@ struct ScreenA: View {
             } label: {
                 Text("Screen C")
             }
+            
+            Button {
+                presented.context(item: .screenC, parentFrame: buttonFrame)
+            } label: {
+                Text("Context ScreenC")
+            }
+            .getFrame(frame: $buttonFrame)
         }
     }
 }

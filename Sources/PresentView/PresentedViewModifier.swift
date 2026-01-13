@@ -10,6 +10,15 @@ public enum PresentedType {
 @available(tvOS 16.0, *)
 @available(macOS 12.0, *)
 @MainActor private struct PresentedViewModifier<PresentedContent, Item>: ViewModifier where PresentedContent: View {
+    @State private var presentedFrame: CGRect = .zero
+    
+#if os(iOS)
+    private let screen = UIScreen.main.bounds
+#elseif os(macOS)
+    private let screen = NSScreen.main?.visibleFrame ?? .zero
+#endif
+    private let spacing: CGFloat = 4
+    private let padding: CGFloat = 12
     private var isPresented: (PresentedType) -> Binding<Bool>
     private let presented: Presented<Item>?
     private let presentedContent: (Item) -> PresentedContent
@@ -41,12 +50,15 @@ public enum PresentedType {
             .popover(isPresented: isPresented(.popover), attachmentAnchor: presented?.attachmentAnchor ?? .rect(.bounds), arrowEdge: presented?.arrowEdge) {
                 if let item {
                     presentedContent(item)
+                        .onDisappear {
+                            presented?.onDismiss?()
+                        }
                 }
             }
 #endif
             .overlay(alignment: .center) {
                 if isOverlay.wrappedValue, let item {
-                    ZStack {
+                    ZStack(alignment: zstackAligment) {
                         presented?.background
                             .ignoresSafeArea(.all)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -59,12 +71,63 @@ public enum PresentedType {
                                 }
                             }
                         
-                        presentedContent(item)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        if isContext {
+                            presentedContent(item)
+                                .onDisappear {
+                                    presented?.onDismiss?()
+                                }
+                                .getFrame(frame: $presentedFrame)
+                                .position(position)
+                        } else {
+                            presentedContent(item)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .onDisappear {
+                                    presented?.onDismiss?()
+                                }
+                        }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
+    }
+    
+    private var position: CGPoint {
+        guard let presented,
+              let parentFrame = presented.parentFrame else {
+            return .zero
+        }
+        let overlaySize = presentedFrame.size
+        let desiredX = parentFrame.maxX - overlaySize.width / 2
+        let desiredY = parentFrame.maxY + spacing + overlaySize.height / 2
+        
+        let minX = overlaySize.width / 2 + padding
+        let maxX = screen.width - overlaySize.width / 2 - padding
+        
+        let minY = overlaySize.height / 2 + padding
+        let maxY = screen.height - overlaySize.height / 2 - padding
+        
+        return CGPoint(
+            x: min(max(desiredX, minX), maxX),
+            y: min(max(desiredY, minY), maxY)
+        )
+    }
+    
+    private var isContext: Bool {
+        switch presented {
+        case .context:
+            true
+        default:
+            false
+        }
+    }
+    
+    private var zstackAligment: Alignment {
+        switch presented {
+        case .context:
+                .topLeading
+        default:
+                .center
+        }
     }
 }
 
@@ -76,6 +139,12 @@ extension View {
         presented: Presented<Item>?,
         @ViewBuilder presentedContent: @escaping (Item) -> PresentedContent
     ) -> some View where PresentedContent: View {
-        modifier(PresentedViewModifier(isPresented: isPresented, presented: presented, presentedContent: presentedContent))
+        modifier(
+            PresentedViewModifier(
+                isPresented: isPresented,
+                presented: presented,
+                presentedContent: presentedContent
+            )
+        )
     }
 }
