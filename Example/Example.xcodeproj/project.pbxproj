@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B7ECAD32F15DE0D00FD87FA /* PresentView in Frameworks */ = {isa = PBXBuildFile; productRef = 2B7ECAD22F15DE0D00FD87FA /* PresentView */; };
 		712FB1B12DB92CEB009CA095 /* PresentView in Frameworks */ = {isa = PBXBuildFile; productRef = 712FB1B02DB92CEB009CA095 /* PresentView */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				712FB1B12DB92CEB009CA095 /* PresentView in Frameworks */,
+				2B7ECAD32F15DE0D00FD87FA /* PresentView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +73,7 @@
 			name = Example;
 			packageProductDependencies = (
 				712FB1B02DB92CEB009CA095 /* PresentView */,
+				2B7ECAD22F15DE0D00FD87FA /* PresentView */,
 			);
 			productName = Example;
 			productReference = 712FB19B2DB92CAB009CA095 /* Example.app */;
@@ -101,7 +104,7 @@
 			mainGroup = 712FB1922DB92CAB009CA095;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				712FB1AF2DB92CEB009CA095 /* XCLocalSwiftPackageReference "../../PresentView" */,
+				2B7ECAD12F15DE0D00FD87FA /* XCLocalSwiftPackageReference "../../PresentView" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 712FB19C2DB92CAB009CA095 /* Products */;
@@ -331,13 +334,17 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		712FB1AF2DB92CEB009CA095 /* XCLocalSwiftPackageReference "../../PresentView" */ = {
+		2B7ECAD12F15DE0D00FD87FA /* XCLocalSwiftPackageReference "../../PresentView" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../PresentView;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2B7ECAD22F15DE0D00FD87FA /* PresentView */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PresentView;
+		};
 		712FB1B02DB92CEB009CA095 /* PresentView */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = PresentView;

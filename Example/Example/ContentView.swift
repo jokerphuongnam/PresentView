@@ -3,6 +3,8 @@ import PresentView
 
 struct ContentView: View {
     @StateObject private var vm: ContentViewModel = .init()
+    @State private var buttonFrame: CGRect = .zero
+    @State private var buttonListFrame: CGRect = .zero
     
     var body: some View {
         PresentView(
@@ -18,6 +20,20 @@ struct ContentView: View {
                     } label: {
                         Text("Screen A")
                     }
+                    
+                    Button {
+                        vm.presented.context(item: .screenC, parentFrame: buttonFrame)
+                    } label: {
+                        Text("Context ScreenC")
+                    }
+                    .getFrame(frame: $buttonFrame)
+                    
+                    Button {
+                        vm.presented.fullScreenCover(item: .list)
+                    } label: {
+                        Text("List")
+                    }
+                    .getFrame(frame: $buttonListFrame)
                 }
                 .padding()
             } presentedContent: { screen in
@@ -28,6 +44,12 @@ struct ContentView: View {
                     ScreenB(presented: $vm.presented)
                 case .screenC:
                     ScreenC()
+                        .shadow(radius: 1)
+                case .list:
+                    ListView(presented: $vm.presented)
+                case .item(let index):
+                    ItemView(item: index)
+                        .shadow(radius: 1)
                 }
             }
     }
