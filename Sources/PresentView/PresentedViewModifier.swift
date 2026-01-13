@@ -11,7 +11,12 @@ public enum PresentedType {
 @available(macOS 12.0, *)
 @MainActor private struct PresentedViewModifier<PresentedContent, Item>: ViewModifier where PresentedContent: View {
     @State private var presentedFrame: CGRect = .zero
+    
+#if os(iOS)
     private let screen = UIScreen.main.bounds
+#elseif os(macOS)
+    private let screen = NSScreen.main?.visibleFrame ?? .zero
+#endif
     private let spacing: CGFloat = 4
     private let padding: CGFloat = 12
     private var isPresented: (PresentedType) -> Binding<Bool>
