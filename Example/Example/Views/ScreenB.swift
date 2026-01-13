@@ -17,6 +17,8 @@ struct ScreenB: View {
                 Button {
                     presented.overlay(item: .screenC) {
                         Color.white.opacity(0.3)
+                    } onDismiss: {
+                        print("Dismiss C")
                     }
                 } label: {
                     Text("Screen C")

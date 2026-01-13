@@ -13,8 +13,8 @@ struct ScreenC: View {
                 Text("Cancel")
             }
         }
-            .padding(16)
-            .background(Color.white)
-            .cornerRadius(20)
+        .padding(16)
+        .background(Color.white)
+        .cornerRadius(20)
     }
 }
