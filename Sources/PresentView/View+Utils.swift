@@ -6,15 +6,10 @@ extension View {
             GeometryReader { proxy in
                 Color.clear
                     .onAppear {
-                        let globalFrame = proxy.frame(in: .global)
-                        let newFrame = CGRect(
-                            x: globalFrame.minX,
-                            y: globalFrame.minY,
-                            width: globalFrame.width,
-                            height: globalFrame.height
-                        )
-
-                        frame.wrappedValue = newFrame
+                        frame.wrappedValue = proxy.frame(in: .global)
+                    }
+                    .onChange(of: proxy.size) { _ in
+                        frame.wrappedValue = proxy.frame(in: .global)
                     }
             }
         )
