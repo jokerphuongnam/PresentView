@@ -8,8 +8,9 @@ extension View {
                     .onAppear {
                         frame.wrappedValue = proxy.frame(in: .global)
                     }
-                    .onChange(of: proxy.size) { _ in
-                        frame.wrappedValue = proxy.frame(in: .global)
+                    .onChange(of: proxy.frame(in: .global)) { newValue in
+                        guard frame.wrappedValue != newValue else { return }
+                        frame.wrappedValue = newValue
                     }
             }
         )
