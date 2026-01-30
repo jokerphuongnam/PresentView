@@ -45,6 +45,7 @@ struct ContentView: View {
                 case .screenC:
                     ScreenC()
                         .shadow(radius: 1)
+                        .transparentBackground()
                 case .list:
                     ListView(presented: $vm.presented)
                 case .item(let index):

@@ -104,6 +104,7 @@ struct ContentView: View {
                 case .screenC:
                     ScreenC()
                         .shadow(radius: 1)
+                        .transparentBackground()
                 case .list:
                     ListView(presented: $vm.presented)
                 case .item(let index):
@@ -174,6 +175,18 @@ Check if dismissal is possible:
 
 ```swift
 dismissPresented.canDismiss
+```
+
+---
+
+## Transparent Background for `fullScreenCover`
+
+This feature provides a SwiftUI modifier that allows `fullScreenCover` to display with a transparent background instead of the default opaque presentation.
+
+### Usage
+
+```swift
+.transparentBackground()
 ```
 
 ---
