@@ -1,5 +1,7 @@
-import UIKit
 import SwiftUI
+
+#if canImport(UIKit)
+import UIKit
 
 extension View {
     @inlinable nonisolated public func transparentBackground(canTapToDismiss: Bool = true) -> some View {
@@ -48,3 +50,4 @@ extension View {
         parent.dismissPresented()
     }
 }
+#endif
