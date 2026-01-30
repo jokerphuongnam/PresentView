@@ -21,6 +21,12 @@ struct ScreenA: View {
             }
             
             Button {
+                presented.fullScreenCover(item: .screenC)
+            } label: {
+                Text("Screen C Transparent")
+            }
+            
+            Button {
                 presented.overlay(item: .screenC)
             } label: {
                 Text("Screen C")
