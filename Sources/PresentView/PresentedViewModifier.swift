@@ -57,16 +57,18 @@ public enum PresentedType {
             }
 #endif
             .overlay(alignment: .center) {
-                if isOverlay.wrappedValue, let item {
+                if isOverlay.wrappedValue, let item, let presented {
                     ZStack(alignment: zstackAligment) {
-                        presented?.background
+                        let _ = print(presented.background, item)
+                        
+                        presented.background
                             .ignoresSafeArea(.all)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
 #if os(iOS)
                             .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
 #endif
                             .onTapGesture {
-                                if presented?.canCloseWhenTapBackground ?? false {
+                                if presented.canCloseWhenTapBackground ?? false {
                                     isOverlay.wrappedValue = false
                                 }
                             }
@@ -74,7 +76,7 @@ public enum PresentedType {
                         if isContext {
                             presentedContent(item)
                                 .onDisappear {
-                                    presented?.onDismiss?()
+                                    presented.onDismiss?()
                                 }
                                 .getFrame(frame: $presentedFrame)
                                 .position(position)
@@ -82,7 +84,7 @@ public enum PresentedType {
                             presentedContent(item)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                                 .onDisappear {
-                                    presented?.onDismiss?()
+                                    presented.onDismiss?()
                                 }
                         }
                     }

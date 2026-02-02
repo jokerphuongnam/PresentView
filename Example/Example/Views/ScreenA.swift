@@ -23,7 +23,13 @@ struct ScreenA: View {
             Button {
                 presented.fullScreenCover(item: .screenC)
             } label: {
-                Text("Screen C Transparent")
+                Text("Screen C Background")
+            }
+            
+            Button {
+                presented.fullScreenCover(item: .screenD)
+            } label: {
+                Text("Screen D Shape style")
             }
             
             Button {

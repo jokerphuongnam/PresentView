@@ -26,6 +26,7 @@ struct NodeView<PresentedContent, Item>: View where PresentedContent: View {
             guard let next else { return false }
             return next == type
         } set: { newValue, transaction in
+            let nextIndex = nextIndex
             if !newValue, nextIndex < presented.count {
                 let _ = withTransaction(transaction) {
                     presented.remove(at: nextIndex)
