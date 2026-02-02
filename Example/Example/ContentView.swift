@@ -22,6 +22,18 @@ struct ContentView: View {
                     }
                     
                     Button {
+                        vm.presented.fullScreenCover(item: .screenD)
+                    } label: {
+                        Text("Screen D Shape style")
+                    }
+                    
+                    Button {
+                        vm.presented.overlay(item: .screenC)
+                    } label: {
+                        Text("Screen C")
+                    }
+                    
+                    Button {
                         vm.presented.context(item: .screenC, parentFrame: buttonFrame)
                     } label: {
                         Text("Context ScreenC")
@@ -45,7 +57,20 @@ struct ContentView: View {
                 case .screenC:
                     ScreenC()
                         .shadow(radius: 1)
-                        .transparentBackground()
+                        .transparentBackground(backgroundColor: .black.opacity(0.3))
+                case .screenD:
+                    ScreenD()
+                        .shadow(radius: 1)
+                        .transparentBackground(
+                            shapeStyle: LinearGradient(
+                                colors: [
+                                    .clear,
+                                    .black.opacity(0.3)
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        )
                 case .list:
                     ListView(presented: $vm.presented)
                 case .item(let index):
