@@ -3,6 +3,7 @@ import PresentView
 
 struct ListView: View {
     @Binding var presented: [Presented<Screen>]
+    @State private var message = ""
     
     var body: some View {
         List {
@@ -77,6 +78,11 @@ struct ListView: View {
             .listRowInsets(.init())
         }
         .listStyle(.plain)
+        .safeAreaInset(edge: .bottom) {
+            TextField("", text: $message)
+                .frame(maxWidth: .infinity)
+                .background(.gray)
+        }
     }
 }
 
