@@ -11,8 +11,8 @@ public enum PresentedType {
 @available(macOS 12.0, *)
 @MainActor private struct PresentedViewModifier<PresentedContent, Item>: ViewModifier where PresentedContent: View {
     @State private var presentedFrame: CGRect = .zero
-    
 #if os(iOS)
+    @Environment(\.keyboardHeight) private var keyboardHeight
     private let screen = UIScreen.main.bounds
 #elseif os(macOS)
     private let screen = NSScreen.main?.visibleFrame ?? .zero
@@ -59,8 +59,6 @@ public enum PresentedType {
             .overlay(alignment: .center) {
                 if isOverlay.wrappedValue, let item, let presented {
                     ZStack(alignment: zstackAligment) {
-                        let _ = print(presented.background, item)
-                        
                         presented.background
                             .ignoresSafeArea(.all)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -100,7 +98,11 @@ public enum PresentedType {
         }
         let overlaySize = presentedFrame.size
         let desiredX = parentFrame.maxX - overlaySize.width / 2
+#if os(iOS)
+        let desiredY = parentFrame.maxY + keyboardHeight / 2 + spacing + overlaySize.height / 2
+#else
         let desiredY = parentFrame.maxY + spacing + overlaySize.height / 2
+#endif
         
         let minX = overlaySize.width / 2 + padding
         let maxX = screen.width - overlaySize.width / 2 - padding

@@ -40,3 +40,16 @@ struct DismissPresentedKey: EnvironmentKey {
         DismissPresentedActionImpl<Any>(.constant([]))
     }
 }
+
+#if os(iOS)
+extension EnvironmentValues {
+    var keyboardHeight: CGFloat {
+        get { self[KeyboardHeightKey.self] }
+        set { self[KeyboardHeightKey.self] = newValue }
+    }
+}
+
+struct KeyboardHeightKey: EnvironmentKey {
+    static let defaultValue: CGFloat = 0
+}
+#endif

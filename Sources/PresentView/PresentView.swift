@@ -4,6 +4,9 @@ import SwiftUI
 public struct PresentView<RootContent, PresentedContent, Item>: View where RootContent: View, PresentedContent: View, Item: Equatable {
     @Binding private var presented: [Presented<Item>]
     @Environment(\.dismiss) private var dismiss
+#if os(iOS)
+    @State private var keyboardHeight: CGFloat = 0
+#endif
     private let rootContent: () -> RootContent
     private let presentedContent: (Item) -> PresentedContent
     
@@ -24,6 +27,17 @@ public struct PresentView<RootContent, PresentedContent, Item>: View where RootC
                 NodeView(presented: $presented, index: 0, presentedContent: presentedContent)
             }
             .environment(\.dismissPresented, DismissPresentedActionImpl($presented))
+#if os(iOS)
+            .environment(\.keyboardHeight, keyboardHeight)
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillChangeFrameNotification)) { notification in
+                if let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                    keyboardHeight = max(0, UIScreen.main.bounds.height - frame.origin.y)
+                }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                keyboardHeight = 0
+            }
+#endif
     }
     
     private func binding(type: PresentedType) -> Binding<Bool> {
