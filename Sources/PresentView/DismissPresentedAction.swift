@@ -18,7 +18,9 @@ struct DismissPresentedActionImpl<Item>: DismissPresentedAction {
     }
     
     func callAsFunction() {
-        presented.pop()
+        withAnimation(.easeInOut(duration: 0.2)) {
+            presented.pop()
+        }
     }
 }
 

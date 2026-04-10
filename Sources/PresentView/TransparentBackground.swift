@@ -4,7 +4,10 @@ import SwiftUI
 import UIKit
 
 extension View {
-    @inlinable nonisolated public func transparentBackground(canTapToDismiss: Bool = true, backgroundColor: Color? = nil) -> some View {
+    @inlinable nonisolated public func transparentBackground(
+        canTapToDismiss: Bool = true,
+        backgroundColor: Color? = nil
+    ) -> some View {
         background(
             TransparentBackground(
                 canTapToDismiss: canTapToDismiss,
@@ -13,7 +16,10 @@ extension View {
         )
     }
     
-    @inlinable nonisolated public func transparentBackground<S>(canTapToDismiss: Bool = true, shapeStyle: S) -> some View where S: ShapeStyle {
+    @inlinable nonisolated public func transparentBackground<S>(
+        canTapToDismiss: Bool = true,
+        shapeStyle: S
+    ) -> some View where S: ShapeStyle {
         background(
             TransparentBackground(
                 canTapToDismiss: canTapToDismiss,
@@ -34,38 +40,51 @@ extension View {
     }
     
     @usableFromInline func makeUIView(context: Context) -> UIView {
-        let view = TransparentBackgroundView(shapeStyle: shapeStyle)
+        let view = TransparentBackgroundView(shapeStyle: shapeStyle, coordinator: context.coordinator, canTapToDismiss: canTapToDismiss)
         view.backgroundColor = .clear
-        
-        if canTapToDismiss {
-            let tapGestureRecognizer = UITapGestureRecognizer(
-                target: context.coordinator,
-                action: #selector(context.coordinator.dismiss)
-            )
-            view.addGestureRecognizer(tapGestureRecognizer)
-        }
         return view
     }
     
     @usableFromInline func updateUIView(_ uiView: UIView, context: Context) {
-        
+        context.coordinator.parent = self
     }
     
     @usableFromInline func makeCoordinator() -> Coordinator {
         Coordinator(parent: self)
     }
     
-    @usableFromInline final class Coordinator {
-        let parent: TransparentBackground
+    @usableFromInline final class Coordinator: NSObject, UIGestureRecognizerDelegate {
+        var parent: TransparentBackground
         var dismissed: Bool = false
+        weak var presentedVC: UIViewController?
+        weak var cardView: UIView?
         
         @usableFromInline init(parent: TransparentBackground) {
             self.parent = parent
         }
         
         @usableFromInline @objc func dismiss() {
-            parent.dismissPresented()
+            guard !dismissed else { return }
             dismissed = true
+            guard let vc = presentedVC else {
+                parent.dismissPresented()
+                return
+            }
+            UIView.animate(withDuration: 0.2) { [weak vc] in
+                guard let vc else { return }
+                vc.view.alpha = 0
+            } completion: { [weak self, weak vc] _ in
+                guard let self, let vc else { return }
+                vc.modalTransitionStyle = .coverVertical
+                self.parent.dismissPresented()
+            }
+        }
+        
+        public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+            guard let cardView, let hostView = gestureRecognizer.view else { return true }
+            let location = touch.location(in: hostView)
+            let cardFrame = cardView.convert(cardView.bounds, to: hostView)
+            return !cardFrame.contains(location)
         }
     }
     
@@ -81,9 +100,13 @@ extension View {
     
     private final class TransparentBackgroundView: UIView {
         private let shapeStyle: S?
+        private weak var coordinator: Coordinator?
+        private let canTapToDismiss: Bool
         
-        init(shapeStyle: S?) {
+        init(shapeStyle: S?, coordinator: Coordinator?, canTapToDismiss: Bool) {
             self.shapeStyle = shapeStyle
+            self.coordinator = coordinator
+            self.canTapToDismiss = canTapToDismiss
             super.init(frame: .zero)
         }
         
@@ -102,6 +125,28 @@ extension View {
             else {
                 return
             }
+            
+            presentedVC.view.layer.removeAllAnimations()
+            presentedVC.view.frame = window.bounds
+            presentedVC.view.alpha = 0
+            coordinator?.presentedVC = presentedVC
+            presentedVC.modalTransitionStyle = .crossDissolve
+            UIView.animate(withDuration: 0.25) { [weak presentedVC] in
+                guard let presentedVC else { return }
+                presentedVC.view.alpha = 1
+            }
+            
+            if canTapToDismiss, let coordinator {
+                let tap = UITapGestureRecognizer(
+                    target: coordinator,
+                    action: #selector(Coordinator.dismiss)
+                )
+                tap.cancelsTouchesInView = false
+                tap.delegate = coordinator
+                coordinator.cardView = self
+                presentedVC.view.addGestureRecognizer(tap)
+            }
+            
             if let backgroundColor = shapeStyle as? Color {
                 DispatchQueue.main.async { [weak self] in
                     guard let self else { return }
@@ -139,4 +184,5 @@ extension View {
         }
     }
 }
+
 #endif

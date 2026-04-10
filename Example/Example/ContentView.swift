@@ -34,6 +34,12 @@ struct ContentView: View {
                     }
                     
                     Button {
+                        vm.presented.fullScreenCover(item: .screenC)
+                    } label: {
+                        Text("Screen C")
+                    }
+                    
+                    Button {
                         vm.presented.context(item: .screenC, parentFrame: buttonFrame)
                     } label: {
                         Text("Context ScreenC")
