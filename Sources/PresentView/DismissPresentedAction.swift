@@ -3,22 +3,31 @@ import SwiftUI
 public protocol DismissPresentedAction {
     var canDismiss: Bool { get }
     func callAsFunction()
+    func callAsFunction(_ animation: Animation?)
 }
 
 @available(macOS 10.15, *)
 struct DismissPresentedActionImpl<Item>: DismissPresentedAction {
     @Binding private var presented: [Presented<Item>]
-    
+
     public var canDismiss: Bool {
         presented.isEmpty == false
     }
-    
+
     init(_ presented: Binding<[Presented<Item>]>) {
         self._presented = presented
     }
-    
+
     func callAsFunction() {
-        presented.pop()
+        _ = withAnimation(.easeInOut(duration: 0.2)) {
+            presented.pop()
+        }
+    }
+
+    func callAsFunction(_ animation: Animation?) {
+        _ = withAnimation(animation) {
+            presented.pop()
+        }
     }
 }
 

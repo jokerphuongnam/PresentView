@@ -1,12 +1,18 @@
 import SwiftUI
 
+@available(macOS 10.15, *)
+private func performWithAnimation(_ animation: Animation? = .default, _ body: () -> Void) {
+    withAnimation(animation) { body() }
+}
+
 extension Array {
     @available(macOS 10.15, *)
     public mutating func sheet<Item>(
         item: Item,
+        animation: Animation? = .default,
         onDismiss: (() -> Void)? = nil
     ) where Self.Element == Presented<Item> {
-        withAnimation {
+        performWithAnimation(animation) {
             append(
                 .sheet(
                     item: item,
@@ -15,13 +21,14 @@ extension Array {
             )
         }
     }
-    
+
     @available(macOS 10.15, *)
     public mutating func fullScreenCover<Item>(
         item: Item,
+        animation: Animation? = .default,
         onDismiss: (() -> Void)? = nil
     ) where Self.Element == Presented<Item> {
-        withAnimation {
+        performWithAnimation(animation) {
             append(
                 .fullScreenCover(
                     item: item,
@@ -30,15 +37,16 @@ extension Array {
             )
         }
     }
-    
+
     @available(macOS 10.15, *)
     public mutating func popover<Item>(
         item: Item,
         attachmentAnchor: PopoverAttachmentAnchor = .rect(.bounds),
         arrowEdge: Edge? = nil,
+        animation: Animation? = .default,
         onDismiss: (() -> Void)? = nil
     ) where Self.Element == Presented<Item> {
-        withAnimation {
+        performWithAnimation(animation) {
             append(
                 .popover(
                     item: item,
@@ -49,15 +57,16 @@ extension Array {
             )
         }
     }
-    
+
     @available(macOS 10.15, *)
     public mutating func overlay<Item>(
         item: Item,
         canCloseWhenTapBackground: Bool = true,
         blurRadius: CGFloat = 5,
+        animation: Animation? = .default,
         onDismiss: (() -> Void)? = nil
     ) where Self.Element == Presented<Item> {
-        withAnimation {
+        performWithAnimation(animation) {
             append(
                 .overlay(
                     item: item,
@@ -69,16 +78,17 @@ extension Array {
             )
         }
     }
-    
+
     @available(macOS 10.15, *)
     public mutating func overlay<Item, Background>(
         item: Item,
         canCloseWhenTapBackground: Bool = true,
         blurRadius: CGFloat = 5,
+        animation: Animation? = .default,
         @ViewBuilder background: () -> Background,
         onDismiss: (() -> Void)? = nil
     ) where Self.Element == Presented<Item>, Background: View {
-        withAnimation {
+        performWithAnimation(animation) {
             append(
                 .overlay(
                     item: item,
@@ -90,16 +100,17 @@ extension Array {
             )
         }
     }
-    
+
     @available(macOS 10.15, *)
     public mutating func context<Item>(
         item: Item,
         parentFrame: CGRect,
         canCloseWhenTapBackground: Bool = true,
         blurRadius: CGFloat = 0,
+        animation: Animation? = .default,
         onDismiss: (() -> Void)? = nil
     ) where Self.Element == Presented<Item> {
-        withAnimation {
+        performWithAnimation(animation) {
             append(
                 .context(
                     item: item,
@@ -112,17 +123,18 @@ extension Array {
             )
         }
     }
-    
+
     @available(macOS 10.15, *)
     public mutating func context<Item, Background>(
         item: Item,
         parentFrame: CGRect,
         canCloseWhenTapBackground: Bool = true,
         blurRadius: CGFloat = 0,
+        animation: Animation? = .default,
         @ViewBuilder background: () -> Background,
         onDismiss: (() -> Void)? = nil
     ) where Self.Element == Presented<Item>, Background: View {
-        withAnimation {
+        performWithAnimation(animation) {
             append(
                 .context(
                     item: item,
