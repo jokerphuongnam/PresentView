@@ -11,6 +11,7 @@ public enum PresentedType {
 @available(macOS 12.0, *)
 @MainActor private struct PresentedViewModifier<PresentedContent, Item>: ViewModifier where PresentedContent: View {
     @State private var presentedFrame: CGRect = .zero
+    @Environment(\.dismissPresented) private var dismissPresented
 #if os(iOS)
     @Environment(\.keyboardHeight) private var keyboardHeight
     private let screen = UIScreen.main.bounds
@@ -43,6 +44,7 @@ public enum PresentedType {
             .fullScreenCover(isPresented: isPresented(.fullScreenCover), onDismiss: presented?.onDismiss) {
                 if let item {
                     presentedContent(item)
+                        .environment(\.dismissPresented, dismissPresented)
                 }
             }
 #endif
@@ -67,7 +69,9 @@ public enum PresentedType {
 #endif
                             .onTapGesture {
                                 if presented.canCloseWhenTapBackground ?? false {
-                                    isOverlay.wrappedValue = false
+                                    withAnimation(.easeInOut(duration: 0.2)) {
+                                        isOverlay.wrappedValue = false
+                                    }
                                 }
                             }
                         
