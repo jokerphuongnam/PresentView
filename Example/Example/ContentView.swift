@@ -9,47 +9,64 @@ struct ContentView: View {
     var body: some View {
         PresentView(
             presented: $vm.presented) {
-                VStack {
-                    Image(systemName: "globe")
-                        .imageScale(.large)
-                        .foregroundStyle(.tint)
-                    Text("Hello, world!")
-                    
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("One stack for this flow")
+                        .font(.headline)
+                    Text("Every button appends to the same presented array. The presented screen can present the next one.")
+                        .font(.subheadline)
+
                     Button {
                         vm.presented.sheet(item: .screenA)
                     } label: {
-                        Text("Screen A")
+                        Text("Sheet — Screen A")
                     }
-                    
+                    .accessibilityIdentifier("open-sheet")
+
                     Button {
-                        vm.presented.fullScreenCover(item: .screenD)
+                        vm.presented.dialog(item: .screenC)
                     } label: {
-                        Text("Screen D Shape style")
+                        Text("Dialog — Screen C")
                     }
-                    
-                    Button {
-                        vm.presented.overlay(item: .screenC)
-                    } label: {
-                        Text("Screen C")
-                    }
-                    
+                    .accessibilityIdentifier("open-dialog")
+
                     Button {
                         vm.presented.fullScreenCover(item: .screenC)
                     } label: {
-                        Text("Screen C")
+                        Text("Full screen cover — Screen C")
                     }
-                    
+                    .accessibilityIdentifier("open-cover")
+
+                    Button {
+                        vm.presented.fullScreenCover(item: .screenD)
+                    } label: {
+                        Text("Full screen cover — transparent Screen D")
+                    }
+
+                    Button {
+                        vm.presented.overlay(item: .screenC)
+                    } label: {
+                        Text("Overlay — Screen C")
+                    }
+                    .accessibilityIdentifier("open-overlay")
+
+                    Button {
+                        vm.presented.popover(item: .screenB)
+                    } label: {
+                        Text("Popover — Screen B")
+                    }
+
                     Button {
                         vm.presented.context(item: .screenC, parentFrame: buttonFrame)
                     } label: {
-                        Text("Context ScreenC")
+                        Text("Context — anchored to this button")
                     }
+                    .accessibilityIdentifier("open-context")
                     .getFrame(frame: $buttonFrame)
-                    
+
                     Button {
                         vm.presented.fullScreenCover(item: .list)
                     } label: {
-                        Text("List")
+                        Text("Full screen cover — list")
                     }
                     .getFrame(frame: $buttonListFrame)
                 }

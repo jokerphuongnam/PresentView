@@ -8,11 +8,14 @@ struct ScreenA: View {
     
     var body: some View {
         VStack {
+            Text("Sheet: Screen A")
+            Text("This page uses the same presented array.")
             Button {
                 dismissPresented()
             } label: {
                 Text("Pop")
             }
+            .accessibilityIdentifier("dismiss-presented")
             
             Button {
                 presented.fullScreenCover(item: .screenB)

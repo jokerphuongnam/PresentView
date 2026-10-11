@@ -12,6 +12,7 @@ struct ScreenC: View {
             } label: {
                 Text("Cancel")
             }
+            .accessibilityIdentifier("dismiss-presented")
         }
         .padding(16)
         .background(Color.white)
