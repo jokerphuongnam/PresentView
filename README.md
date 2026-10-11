@@ -217,7 +217,7 @@ This feature provides a SwiftUI modifier that allows `fullScreenCover` to displa
 | 1.1.3 | Patch |
 | 1.1.4 | Patch |
 | 1.1.5 | Patch |
-| 1.2.0 | `dialog` on the same stack. `sheet`, `fullScreenCover`, `popover`, `overlay`, and `context` stay |
+| 1.2.0 | `dialog` on the same stack. macOS deployment is 13. `sheet`, `fullScreenCover`, `popover`, `overlay`, and `context` stay |
 
 ## License
 
