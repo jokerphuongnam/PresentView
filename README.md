@@ -2,14 +2,16 @@
 
 PresentView is a lightweight SwiftUI utility that helps manage view presentation in a unified, stack-based way.
 
-It allows you to present and dismiss multiple screens using a single source of truth, supporting `sheet`, `fullScreenCover`, and custom `overlay` presentations.
+It allows you to present and dismiss multiple screens using a single source of truth. One `[Presented]` array is the coordinator for a flow. `PresentView` draws that array. Current release: `1.2.0`.
+
+`from: "1.0.0"` stays on 1.x. `1.2.0` adds `dialog` and keeps `sheet`, `fullScreenCover`, `popover`, `overlay`, and `context`.
 
 ---
 
 ## Features
 
 - Centralized presentation state
-- Support for `sheet`, `fullScreenCover`, and `overlay`
+- Support for `sheet`, `fullScreenCover`, `dialog`, `popover`, `overlay`, and `context`
 - Nested presentations
 - Environment-based dismiss handling
 - Clean, declarative SwiftUI API
@@ -136,6 +138,14 @@ presented.sheet(item: .screenA)
 presented.fullScreenCover(item: .screenB)
 ```
 
+### Dialog
+
+A dialog is a centered card on a dim background. It is not a `fullScreenCover` restyled as a dialog. The content keeps its own size. Tapping the dim background dismisses it unless `canCloseWhenTapBackground` is `false`.
+
+```swift
+presented.dialog(item: .screenA)
+```
+
 ### Overlay
 
 ```swift
@@ -190,6 +200,24 @@ This feature provides a SwiftUI modifier that allows `fullScreenCover` to displa
 ```
 
 ---
+
+## Versions
+
+| Version | What it is |
+|---|---|
+| 1.0.0 | First release |
+| 1.0.1 | Patch on 1.0.0 |
+| 1.0.2 | MIT license |
+| 1.0.3 | Patch |
+| 1.0.4 | Patch |
+| 1.0.5 | Patch |
+| 1.1.0 | Minor presentation update |
+| 1.1.1 | Patch |
+| 1.1.2 | Patch |
+| 1.1.3 | Patch |
+| 1.1.4 | Patch |
+| 1.1.5 | Patch |
+| 1.2.0 | `dialog` on the same stack. macOS deployment is 13. `sheet`, `fullScreenCover`, `popover`, `overlay`, and `context` stay |
 
 ## License
 

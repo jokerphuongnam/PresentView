@@ -82,6 +82,11 @@ public enum PresentedType {
                                 }
                                 .getFrame(frame: $presentedFrame)
                                 .position(position)
+                        } else if isDialog {
+                            presentedContent(item)
+                                .onDisappear {
+                                    presented.onDismiss?()
+                                }
                         } else {
                             presentedContent(item)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -123,6 +128,15 @@ public enum PresentedType {
     private var isContext: Bool {
         switch presented {
         case .context:
+            true
+        default:
+            false
+        }
+    }
+
+    private var isDialog: Bool {
+        switch presented {
+        case .dialog:
             true
         default:
             false

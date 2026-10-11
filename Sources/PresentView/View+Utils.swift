@@ -2,7 +2,7 @@ import SwiftUI
 
 extension View {
     @ViewBuilder @MainActor @preconcurrency public func getFrame(frame: Binding<CGRect>) -> some View {
-        if #available(iOS 16.0, *) {
+        if #available(iOS 16.0, macOS 13.0, *) {
             onGeometryChange(
                 for: CGRect.self) { proxy in
                     proxy.frame(in: .global)
