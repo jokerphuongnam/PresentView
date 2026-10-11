@@ -18,6 +18,9 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "PresentView")
+            name: "PresentView"),
+        .testTarget(
+            name: "PresentViewTests",
+            dependencies: ["PresentView"])
     ]
 )

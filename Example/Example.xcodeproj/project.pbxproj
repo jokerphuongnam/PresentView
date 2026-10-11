@@ -13,12 +13,18 @@
 
 /* Begin PBXFileReference section */
 		712FB19B2DB92CAB009CA095 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1UITEST0000000000000001 /* ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		712FB19D2DB92CAB009CA095 /* Example */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Example;
+			sourceTree = "<group>";
+		};
+		A1UITEST0000000000000002 /* ExampleUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ExampleUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -40,6 +46,7 @@
 			isa = PBXGroup;
 			children = (
 				712FB19D2DB92CAB009CA095 /* Example */,
+				A1UITEST0000000000000002 /* ExampleUITests */,
 				712FB19C2DB92CAB009CA095 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,6 +55,7 @@
 			isa = PBXGroup;
 			children = (
 				712FB19B2DB92CAB009CA095 /* Example.app */,
+				A1UITEST0000000000000001 /* ExampleUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -79,6 +87,27 @@
 			productReference = 712FB19B2DB92CAB009CA095 /* Example.app */;
 			productType = "com.apple.product-type.application";
 		};
+		A1UITEST0000000000000003 /* ExampleUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1UITEST0000000000000004 /* Build configuration list for PBXNativeTarget "ExampleUITests" */;
+			buildPhases = (
+				A1UITEST0000000000000005 /* Sources */,
+				A1UITEST0000000000000006 /* Frameworks */,
+				A1UITEST0000000000000007 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A1UITEST0000000000000008 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A1UITEST0000000000000002 /* ExampleUITests */,
+			);
+			name = ExampleUITests;
+			productName = ExampleUITests;
+			productReference = A1UITEST0000000000000001 /* ExampleUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -91,6 +120,10 @@
 				TargetAttributes = {
 					712FB19A2DB92CAB009CA095 = {
 						CreatedOnToolsVersion = 16.3;
+					};
+					A1UITEST0000000000000003 = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = 712FB19A2DB92CAB009CA095;
 					};
 				};
 			};
@@ -112,6 +145,7 @@
 			projectRoot = "";
 			targets = (
 				712FB19A2DB92CAB009CA095 /* Example */,
+				A1UITEST0000000000000003 /* ExampleUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -124,7 +158,52 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A1UITEST0000000000000007 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A1UITEST0000000000000005 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A1UITEST0000000000000006 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXContainerItemProxy section */
+		A1UITEST0000000000000009 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 712FB1932DB92CAB009CA095 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 712FB19A2DB92CAB009CA095;
+			remoteInfo = Example;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXTargetDependency section */
+		A1UITEST0000000000000008 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 712FB19A2DB92CAB009CA095 /* Example */;
+			targetProxy = A1UITEST0000000000000009 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXSourcesBuildPhase section */
 		712FB1972DB92CAB009CA095 /* Sources */ = {
@@ -314,6 +393,42 @@
 			};
 			name = Release;
 		};
+		A1UITEST000000000000000A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YZK42MUV9Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lilmonster.ExampleUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Example;
+			};
+			name = Debug;
+		};
+		A1UITEST000000000000000B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YZK42MUV9Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lilmonster.ExampleUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Example;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -331,6 +446,15 @@
 			buildConfigurations = (
 				712FB1A72DB92CAC009CA095 /* Debug */,
 				712FB1A82DB92CAC009CA095 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1UITEST0000000000000004 /* Build configuration list for PBXNativeTarget "ExampleUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1UITEST000000000000000A /* Debug */,
+				A1UITEST000000000000000B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -2,7 +2,7 @@
 
 PresentView is a lightweight SwiftUI utility that helps manage view presentation in a unified, stack-based way.
 
-It allows you to present and dismiss multiple screens using a single source of truth. One `[Presented]` array is the coordinator for a flow. `PresentView` draws that array. Current release: `1.2.0`.
+It allows you to present and dismiss multiple screens using a single source of truth. One `[Presented]` array is the coordinator for a flow. `PresentView` draws that array. Current release: `1.2.1`.
 
 `from: "1.0.0"` stays on 1.x. `1.2.0` adds `dialog` and keeps `sheet`, `fullScreenCover`, `popover`, `overlay`, and `context`.
 
@@ -44,83 +44,36 @@ Each `Presented` item describes how a screen is presented.
 
 ## Usage Example
 
-### Screen Enum
+The Example app stores one array and draws it with `PresentView`. Home has one button for every style. A presented screen reads the same array and can present the next screen.
 
 ```swift
-enum Screen: Hashable {
-    case screenA
-    case screenB
-    case screenC
-}
-```
+@StateObject private var vm = ContentViewModel()
 
----
-
-### ContentView
-
-```swift
-import SwiftUI
-import PresentView
-
-struct ContentView: View {
-    @StateObject private var vm: ContentViewModel = .init()
-    @State private var buttonFrame: CGRect = .zero
-    @State private var buttonListFrame: CGRect = .zero
-    
-    var body: some View {
-        PresentView(
-            presented: $vm.presented) {
-                VStack {
-                    Image(systemName: "globe")
-                        .imageScale(.large)
-                        .foregroundStyle(.tint)
-                    Text("Hello, world!")
-                    
-                    Button {
-                        vm.presented.sheet(item: .screenA)
-                    } label: {
-                        Text("Screen A")
-                    }
-                    
-                    Button {
-                        vm.presented.context(item: .screenC, parentFrame: buttonFrame)
-                    } label: {
-                        Text("Context ScreenC")
-                    }
-                    .getFrame(frame: $buttonFrame)
-                    
-                    Button {
-                        vm.presented.fullScreenCover(item: .list)
-                    } label: {
-                        Text("List")
-                    }
-                    .getFrame(frame: $buttonListFrame)
-                }
-                .padding()
-            } presentedContent: { screen in
-                switch screen {
-                case .screenA:
-                    ScreenA(presented: $vm.presented)
-                case .screenB:
-                    ScreenB(presented: $vm.presented)
-                case .screenC:
-                    ScreenC()
-                        .shadow(radius: 1)
-                        .transparentBackground()
-                case .list:
-                    ListView(presented: $vm.presented)
-                case .item(let index):
-                    ItemView(item: index)
-                        .shadow(radius: 1)
-                }
-            }
+PresentView(presented: $vm.presented) {
+    VStack {
+        Button("Sheet — Screen A") { vm.presented.sheet(item: .screenA) }
+        Button("Dialog — Screen C") { vm.presented.dialog(item: .screenC) }
+        Button("Full screen cover — Screen C") { vm.presented.fullScreenCover(item: .screenC) }
+        Button("Overlay — Screen C") { vm.presented.overlay(item: .screenC) }
+        Button("Popover — Screen B") { vm.presented.popover(item: .screenB) }
+        Button("Context — anchored to this button") {
+            vm.presented.context(item: .screenC, parentFrame: buttonFrame)
+        }
+        .getFrame(frame: $buttonFrame)
+    }
+} presentedContent: { screen in
+    switch screen {
+    case .screenA: ScreenA(presented: $vm.presented)
+    case .screenB: ScreenB(presented: $vm.presented)
+    case .screenC: ScreenC()
+    case .screenD: ScreenD().transparentBackground()
+    case .list: ListView(presented: $vm.presented)
+    case .item(let index): ItemView(item: index)
     }
 }
-
-final class ContentViewModel: ObservableObject {
-    @Published var presented: [Presented<Screen>] = []
-}
 ```
+
+`ScreenA` is the sheet. From there the same array opens Screen B as a full screen cover, Screen C as an overlay or a context, and `dismissPresented()` removes only the top layer.
 
 ---
 
@@ -152,9 +105,16 @@ presented.dialog(item: .screenA)
 presented.overlay(item: .screenC)
 ```
 
-### Context
+### Popover
+
 ```swift
-presented.context(item: .item(index: index), parentFrame: parentFrame)
+presented.popover(item: .screenB)
+```
+
+### Context
+
+```swift
+presented.context(item: .screenC, parentFrame: buttonFrame)
 ```
 
 With custom background:
@@ -218,6 +178,13 @@ This feature provides a SwiftUI modifier that allows `fullScreenCover` to displa
 | 1.1.4 | Patch |
 | 1.1.5 | Patch |
 | 1.2.0 | `dialog` on the same stack. macOS deployment is 13. `sheet`, `fullScreenCover`, `popover`, `overlay`, and `context` stay |
+| 1.2.1 | Unit tests, Example UI tests, and a Home button for every style including popover |
+
+## Tests
+
+Unit tests live in `Tests/PresentViewTests` and run with `swift test`. They cover every style on one array, `pop`, the safe subscript, dialog dismiss flags, and `dismissPresented`.
+
+UI tests live in `Example/ExampleUITests`. Run the `Example` scheme on an iOS Simulator. They open a sheet, a dialog, an overlay, and a full screen cover, then dismiss each one.
 
 ## License
 
