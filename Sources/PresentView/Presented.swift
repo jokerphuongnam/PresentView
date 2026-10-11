@@ -10,6 +10,11 @@ public enum Presented<Item> {
         item: Item,
         onDismiss: (() -> Void)? = nil
     )
+    case dialog(
+        item: Item,
+        canCloseWhenTapBackground: Bool = true,
+        onDismiss: (() -> Void)? = nil
+    )
     case popover(
         item: Item,
         attachmentAnchor: PopoverAttachmentAnchor = .rect(.bounds),
@@ -41,6 +46,8 @@ extension Presented {
             item
         case .fullScreenCover(let item, _):
             item
+        case .dialog(let item, _, _):
+            item
         case .popover(let item, _, _, _):
             item
         case .overlay(let item, _, _, _, _):
@@ -55,6 +62,8 @@ extension Presented {
         case .sheet(_, let onDismiss):
             onDismiss
         case .fullScreenCover(_, let onDismiss):
+            onDismiss
+        case .dialog(_, _, let onDismiss):
             onDismiss
         case .popover(_, _, _, let onDismiss):
             onDismiss
@@ -96,6 +105,8 @@ extension Presented {
             canCloseWhenTapBackground
         case .context(_, _, let canCloseWhenTapBackground, _, _, _):
             canCloseWhenTapBackground
+        case .dialog(_, let canCloseWhenTapBackground, _):
+            canCloseWhenTapBackground
         default:
             false
         }
@@ -118,6 +129,8 @@ extension Presented {
             background
         case .context(_, _, _, _, let background, _):
             background
+        case .dialog:
+            Color.black.opacity(0.3)
         default:
             EmptyView()
         }
@@ -130,6 +143,7 @@ extension Presented {
         case (.popover, .popover): true
         case (.overlay, .overlay): true
         case (.context, .overlay): true
+        case (.dialog, .overlay): true
         default: false
         }
     }

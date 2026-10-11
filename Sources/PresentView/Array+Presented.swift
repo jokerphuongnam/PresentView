@@ -39,6 +39,23 @@ extension Array {
     }
 
     @available(macOS 10.15, *)
+    public mutating func dialog<Item>(
+        item: Item,
+        canCloseWhenTapBackground: Bool = true,
+        animation: Animation? = .default,
+        onDismiss: (() -> Void)? = nil
+    ) where Self.Element == Presented<Item> {
+        performWithAnimation(animation) {
+            append(
+                .dialog(
+                    item: item,
+                    canCloseWhenTapBackground: canCloseWhenTapBackground,
+                    onDismiss: onDismiss
+                )
+            )
+        }
+    }
+
     public mutating func popover<Item>(
         item: Item,
         attachmentAnchor: PopoverAttachmentAnchor = .rect(.bounds),
